@@ -32,5 +32,4 @@ Simply open `index.html` in a web browser and:
 3. View and reuse previous messages from the history section
 
 ## Screenshot
-
-[Add a screenshot of the application here]
+<img width="1511" alt="Screenshot 2025-04-15 at 5 01 16 PM" src="https://github.com/user-attachments/assets/58d1c6c3-a5e2-4ff7-8618-08a74f3991a1" />
