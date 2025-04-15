@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-3 Interface</title>
+    <style>
+        :root {
+            --primary-purple: #6a1b9a;
+            --light-purple: #9c4dcc;
+            --dark-purple: #38006b;
+            --white: #ffffff;
+            --off-white: #f5f5f5;
+            --light-gray: #e0e0e0;
+            --dark-gray: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--off-white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-purple);
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .api-key-container {
+            background-color: var(--white);
+            padding: 20px;
+            border-bottom: 2px solid var(--light-purple);
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--light-purple);
+            outline: none;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--white);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .prompt-container {
+            padding: 20px;
+            border-bottom: 2px solid var(--light-purple);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--light-gray);
+        }
+        
+        .model-select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--white);
+            color: var(--primary-purple);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .button {
+            background-color: var(--primary-purple);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button:hover {
+            background-color: var(--light-purple);
+        }
+        
+        .button:disabled {
+            background-color: var(--light-gray);
+            cursor: not-allowed;
+        }
+        
+        .response-container {
+            padding: 20px;
+            min-height: 200px;
+        }
+        
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .response-title {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+        
+        .copy-button {
+            background-color: transparent;
+            color: var(--primary-purple);
+            border: 1px solid var(--primary-purple);
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--primary-purple);
+            color: var(--white);
+        }
+        
+        .response-content {
+            background-color: var(--off-white);
+            padding: 15px;
+            border-radius: 5px;
+            line-height: 1.7;
+            min-height: 150px;
+            white-space: pre-wrap;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .loading-spinner {
+            border: 5px solid var(--light-gray);
+            border-top: 5px solid var(--primary-purple);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: #e53935;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GPT-3 Interface</h1>
+            <p>Interact with OpenAI's GPT-3 language model</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="api-key-container">
+                <div class="input-group">
+                    <label for="api-key">OpenAI API Key</label>
+                    <input type="text" id="api-key" placeholder="Enter your OpenAI API key" />
+                    <div id="api-key-error" class="error"></div>
+                </div>
+            </div>
+            
+            <div class="prompt-container">
+                <div class="input-group">
+                    <label for="prompt">Enter your prompt</label>
+                    <textarea id="prompt" placeholder="Type your message here..."></textarea>
+                    <div id="prompt-error" class="error"></div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <select class="model-select" id="model-select">
+                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                    <option value="text-davinci-003">Davinci</option>
+                    <option value="text-curie-001">Curie</option>
+                    <option value="text-babbage-001">Babbage</option>
+                    <option value="text-ada-001">Ada</option>
+                </select>
+                
+                <button class="button" id="submit-button">Generate Response</button>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Generating response...</p>
+            </div>
+            
+            <div class="response-container">
+                <div class="response-header">
+                    <h3 class="response-title">Response</h3>
+                    <button class="copy-button" id="copy-button">Copy</button>
+                </div>
+                <div class="response-content" id="response-content">
+                    Your response will appear here...
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>This is a simple interface for OpenAI's GPT-3 API. You will need your own API key to use this service.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const apiKeyInput = document.getElementById('api-key');
+        const promptInput = document.getElementById('prompt');
+        const modelSelect = document.getElementById('model-select');
+        const submitButton = document.getElementById('submit-button');
+        const loadingIndicator = document.getElementById('loading');
+        const responseContent = document.getElementById('response-content');
+        const copyButton = document.getElementById('copy-button');
+        const apiKeyError = document.getElementById('api-key-error');
+        const promptError = document.getElementById('prompt-error');
+        
+        // Check for saved API key
+        if (localStorage.getItem('openai_api_key')) {
+            apiKeyInput.value = localStorage.getItem('openai_api_key');
+        }
+        
+        // Event Listeners
+        submitButton.addEventListener('click', generateResponse);
+        copyButton.addEventListener('click', copyResponse);
+        apiKeyInput.addEventListener('input', () => {
+            localStorage.setItem('openai_api_key', apiKeyInput.value);
+            apiKeyError.textContent = '';
+        });
+        promptInput.addEventListener('input', () => {
+            promptError.textContent = '';
+        });
+        
+        // Generate Response Function
+        async function generateResponse() {
+            // Validate inputs
+            if (!validateInputs()) {
+                return;
+            }
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+            responseContent.textContent = '';
+            
+            const apiKey = apiKeyInput.value;
+            const prompt = promptInput.value;
+            const model = modelSelect.value;
+            
+            try {
+                let url, requestData;
+                
+                if (model.includes('gpt')) {
+                    // Chat completions endpoint for chat models
+                    url = 'https://api.openai.com/v1/chat/completions';
+                    requestData = {
+                        model: model,
+                        messages: [
+                            { role: 'user', content: prompt }
+                        ],
+                        temperature: 0.7
+                    };
+                } else {
+                    // Completions endpoint for legacy models
+                    url = 'https://api.openai.com/v1/completions';
+                    requestData = {
+                        model: model,
+                        prompt: prompt,
+                        max_tokens: 1000,
+                        temperature: 0.7
+                    };
+                }
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    let result;
+                    
+                    if (model.includes('gpt')) {
+                        result = data.choices[0].message.content;
+                    } else {
+                        result = data.choices[0].text;
+                    }
+                    
+                    responseContent.textContent = result;
+                } else {
+                    handleApiError(data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                responseContent.textContent = `Error: ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Validate Inputs
+        function validateInputs() {
+            let isValid = true;
+            
+            if (!apiKeyInput.value) {
+                apiKeyError.textContent = 'API key is required';
+                isValid = false;
+            }
+            
+            if (!promptInput.value) {
+                promptError.textContent = 'Prompt is required';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Handle API Errors
+        function handleApiError(data) {
+            if (data.error) {
+                if (data.error.type === 'invalid_request_error') {
+                    responseContent.textContent = `API Error: ${data.error.message}`;
+                } else if (data.error.type === 'authentication_error') {
+                    responseContent.textContent = 'Authentication Error: Invalid API key';
+                    apiKeyError.textContent = 'Invalid API key';
+                } else {
+                    responseContent.textContent = `API Error: ${data.error.message}`;
+                }
+            } else {
+                responseContent.textContent = 'Unknown error occurred';
+            }
+        }
+        
+        // Copy Response to Clipboard
+        function copyResponse() {
+            const textToCopy = responseContent.textContent;
+            
+            if (textToCopy && textToCopy !== 'Your response will appear here...') {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'Copied!';
+                        
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
