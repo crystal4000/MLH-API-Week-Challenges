@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #6b46c1; /* Purple */
+  --secondary-color: #ffffff; /* White */
+}
+
+body {
+  @apply bg-secondary-color text-gray-800;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply text-primary-color;
+}
+
+button {
+  @apply bg-primary-color text-secondary-color hover:bg-purple-700;
+}
+
+input {
+  @apply border border-gray-300 rounded-md p-2;
+}
+
+.response {
+  @apply mt-4 p-4 border border-gray-300 rounded-md bg-white shadow-md;
+}
