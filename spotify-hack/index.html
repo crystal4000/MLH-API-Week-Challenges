@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrible Karaoke Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1DB954;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #000000;
+        }
+
+        .subtitle {
+            color: #000000;
+            font-style: italic;
+            margin: 10px 0 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #282828;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-section, .generator-section, .playlist-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .login-button, .generate-button, .save-button {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            margin: 10px 0;
+        }
+
+        .login-button:hover, .generate-button:hover, .save-button:hover {
+            background-color: #1ed760;
+            transform: scale(1.05);
+        }
+
+        .difficulty-slider {
+            width: 80%;
+            margin: 20px 0;
+        }
+
+        .difficulty-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-value {
+            font-size: 1.5rem;
+            color: #1DB954;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #playlist {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .song-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #333333;
+            border-radius: 5px;
+            border-left: 4px solid #1DB954;
+        }
+
+        .song-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .song-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .song-artist {
+            color: #b3b3b3;
+        }
+
+        .difficulty-badge {
+            background-color: #E91E63;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .difficulty-badge.extreme {
+            background-color: #FF0000;
+        }
+
+        .difficulty-badge.hard {
+            background-color: #FF5722;
+        }
+
+        .difficulty-badge.medium {
+            background-color: #FFC107;
+        }
+
+        .info-section {
+            margin: 20px 0;
+            text-align: center;
+            padding: 15px;
+            background-color: #333333;
+            border-radius: 8px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            border: 5px solid #333333;
+            border-top: 5px solid #1DB954;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reason {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #ff6b6b;
+            font-style: italic;
+        }
+
+        .play-button {
+            background-color: transparent;
+            color: #1DB954;
+            border: 1px solid #1DB954;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .play-button:hover {
+            background-color: rgba(29, 185, 84, 0.2);
+        }
+
+        .song-details {
+            display: flex;
+            align-items: center;
+        }
+
+        footer {
+            background-color: #282828;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-text {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            background-color: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .setup-instructions {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .setup-instructions code {
+            background-color: #222222;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .setup-instructions ol {
+            margin-left: 20px;
+            text-align: left;
+        }
+
+        /* Modern Range Slider Styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 10px;
+            background: #333333;
+            border-radius: 5px;
+            background-image: linear-gradient(#1DB954, #1DB954);
+            background-repeat: no-repeat;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #1DB954;
+            cursor: pointer;
+            box-shadow: 0 0 2px 0 #555;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .song-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .difficulty-badge {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Terrible Karaoke Generator</h1>
+        <p class="subtitle">Create the most impossible karaoke playlist ever</p>
+    </header>
+
+    <div class="container">
+        <!-- API Setup Instructions -->
+        <div class="setup-instructions" id="setup-instructions">
+            <h2>Setup Instructions</h2>
+            <p>To use this app, you need to set up a Spotify Developer account:</p>
+            <ol>
+                <li>Go to the <a href="https://developer.spotify.com/dashboard/" target="_blank" style="color:#1DB954;">Spotify Developer Dashboard</a></li>
+                <li>Log in with your Spotify account</li>
+                <li>Click "Create App"</li>
+                <li>Fill in the app details:
+                    <ul>
+                        <li>App name: Terrible Karaoke Generator</li>
+                        <li>App description: Find songs impossible to sing at karaoke</li>
+                        <li>Redirect URI: <code id="redirect-uri">http://localhost:5500</code> (update this to match your development server)</li>
+                    </ul>
+                </li>
+                <li>Once created, copy your Client ID and paste it below</li>
+            </ol>
+            <div style="margin: 20px 0;">
+                <label for="client-id" style="display: block; margin-bottom: 5px;">Enter your Spotify Client ID:</label>
+                <input type="text" id="client-id" style="width: 100%; padding: 8px; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                <button id="save-client-id" style="margin-top: 10px; padding: 8px 15px; background: #1DB954; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section hidden" id="login-section">
+            <p>Connect with your Spotify account to create the ultimate challenging karaoke playlist.</p>
+            <button class="login-button" id="login-button">Connect with Spotify</button>
+        </div>
+
+        <!-- Generator Section (Hidden until logged in) -->
+        <div class="generator-section hidden" id="generator-section">
+            <h2>Generate Your Nightmare Playlist</h2>
+            <p>Adjust the difficulty level to make your karaoke experience more or less impossible:</p>
+            
+            <div class="difficulty-labels">
+                <span>Challenging</span>
+                <span>Impossible</span>
+            </div>
+            <input type="range" min="1" max="5" value="3" class="difficulty-slider" id="difficulty-slider">
+            <div class="difficulty-value" id="difficulty-value">Difficulty: 3/5</div>
+            
+            <p>We'll find songs with:</p>
+            <ul>
+                <li>Extreme vocal ranges</li>
+                <li>Complex lyrics and wordplay</li>
+                <li>Rapid-fire delivery</li>
+                <li>Unusual timing and rhythms</li>
+            </ul>
+            
+            <button class="generate-button" id="generate-button">Generate Terrible Playlist</button>
+            
+            <div class="loading hidden" id="loading-indicator">
+                <div class="loading-spinner"></div>
+                <p>Finding impossible songs...</p>
+            </div>
+        </div>
+
+        <!-- Playlist Section (Hidden until generated) -->
+        <div class="playlist-section hidden" id="playlist-section">
+            <h2>Your Impossible Karaoke Playlist</h2>
+            <p>Even professional singers would struggle with these:</p>
+            
+            <div id="playlist">
+                <!-- Songs will be added here by JavaScript -->
+            </div>
+            
+            <button class="save-button" id="save-button">Save to Spotify</button>
+            
+            <div class="info-section">
+                <h3>Why These Songs?</h3>
+                <p>Each selected song has specific vocal challenges that make it particularly difficult for karaoke.</p>
+                <p>Attempts may result in public embarrassment, voice strain, or newfound respect for professional singers.</p>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div class="error-message hidden" id="error-display"></div>
+    </div>
+
+    <footer>
+        <p class="footer-text">This app uses the Spotify API but is not affiliated with Spotify AB.</p>
+        <p class="footer-text">Created for entertainment purposes only. Sing at your own risk.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const setupInstructions = document.getElementById('setup-instructions');
+        const loginSection = document.getElementById('login-section');
+        const generatorSection = document.getElementById('generator-section');
+        const playlistSection = document.getElementById('playlist-section');
+        const loginButton = document.getElementById('login-button');
+        const generateButton = document.getElementById('generate-button');
+        const saveButton = document.getElementById('save-button');
+        const difficultySlider = document.getElementById('difficulty-slider');
+        const difficultyValue = document.getElementById('difficulty-value');
+        const playlistContainer = document.getElementById('playlist');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const errorDisplay = document.getElementById('error-display');
+        const clientIdInput = document.getElementById('client-id');
+        const saveClientIdButton = document.getElementById('save-client-id');
+        const redirectUriElement = document.getElementById('redirect-uri');
+        
+        // Set redirect URI to current location
+        const redirectUri = window.location.href.split('#')[0];
+        redirectUriElement.textContent = redirectUri;
+        
+        // Check for saved client ID
+        let clientId = localStorage.getItem('spotify_client_id');
+        if (clientId) {
+            clientIdInput.value = clientId;
+        }
+        
+        // Save client ID
+        saveClientIdButton.addEventListener('click', () => {
+            clientId = clientIdInput.value.trim();
+            if (clientId) {
+                localStorage.setItem('spotify_client_id', clientId);
+                setupInstructions.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+            } else {
+                showError('Please enter a valid Client ID');
+            }
+        });
+        
+        // Show error message
+        function showError(message) {
+            errorDisplay.textContent = message;
+            errorDisplay.classList.remove('hidden');
+            setTimeout(() => {
+                errorDisplay.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // Spotify Authentication
+        loginButton.addEventListener('click', () => {
+            if (!clientId) {
+                showError('Client ID is missing. Please set up your Spotify API credentials first.');
+                setupInstructions.classList.remove('hidden');
+                loginSection.classList.add('hidden');
+                return;
+            }
+            
+            // Generate random state value for security
+            const state = generateRandomString(16);
+            localStorage.setItem('spotify_auth_state', state);
+            
+            // Define required scopes
+            const scopes = 'playlist-modify-private playlist-modify-public user-read-private';
+            
+            // Build authorization URL - using code flow (not implicit grant)
+            const authUrl = 'https://accounts.spotify.com/authorize' +
+                '?response_type=code' +
+                '&client_id=' + encodeURIComponent(clientId) +
+                '&scope=' + encodeURIComponent(scopes) +
+                '&redirect_uri=' + encodeURIComponent(redirectUri) +
+                '&state=' + encodeURIComponent(state);
+                
+            window.location.href = authUrl;
+        });
+        
+        // Generate random string for state parameter
+        function generateRandomString(length) {
+            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let text = '';
+            
+            for (let i = 0; i < length; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+            
+            return text;
+        }
+        
+        // Check if we're returning from Spotify auth
+        window.onload = function() {
+            // First check if we have a client ID
+            if (clientId) {
+                clientIdInput.value = clientId;
+                setupInstructions.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+            }
+            
+            // Check for auth code or error in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            const error = urlParams.get('error');
+            const storedState = localStorage.getItem('spotify_auth_state');
+            
+            if (error) {
+                showError('Authentication error: ' + error);
+                return;
+            }
+            
+            if (code && state) {
+                // Verify state matches
+                if (state !== storedState) {
+                    showError('State mismatch error. Please try logging in again.');
+                    return;
+                }
+                
+                // In a production app, we would exchange the code for an access token here
+                // For this demo, we'll simulate a successful authentication
+                
+                // Show generator section
+                loginSection.classList.add('hidden');
+                generatorSection.classList.remove('hidden');
+                
+                // For a real app, you'd need a server-side component to exchange the code:
+                // 1. POST to https://accounts.spotify.com/api/token
+                // 2. Include client_id, client_secret, grant_type=authorization_code, code, redirect_uri
+                // 3. Store the received access_token and refresh_token
+            }
+        };
+        
+        // Update difficulty display
+        difficultySlider.addEventListener('input', () => {
+            const value = difficultySlider.value;
+            difficultyValue.textContent = `Difficulty: ${value}/5`;
+        });
+        
+        // Generate Playlist Button Click
+        generateButton.addEventListener('click', generatePlaylist);
+        
+        // Save to Spotify Button Click
+        saveButton.addEventListener('click', savePlaylistToSpotify);
+        
+        // Playlist Generation Function
+        async function generatePlaylist() {
+            const difficultyLevel = parseInt(difficultySlider.value);
+            
+            // Show loading indicator
+            loadingIndicator.classList.remove('hidden');
+            
+            // In a real app, we would search Spotify for difficult songs based on various criteria
+            // For this demo, we'll use a predefined list of notoriously difficult songs
+            setTimeout(() => {
+                // Hide loading indicator
+                loadingIndicator.classList.add('hidden');
+                
+                // Show playlist section
+                playlistSection.classList.remove('hidden');
+                
+                // Clear existing playlist
+                playlistContainer.innerHTML = '';
+                
+                // Add songs based on difficulty
+                const songs = getTerribleKaraokeSongs(difficultyLevel);
+                songs.forEach(song => {
+                    addSongToPlaylist(song);
+                });
+            }, 2000); // Simulate API delay
+        }
+        
+        // Add a song to the playlist display
+        function addSongToPlaylist(song) {
+            const songElement = document.createElement('div');
+            songElement.className = 'song-item';
+            
+            let difficultyClass = '';
+            if (song.difficulty >= 5) {
+                difficultyClass = 'extreme';
+            } else if (song.difficulty >= 4) {
+                difficultyClass = 'hard';
+            } else {
+                difficultyClass = 'medium';
+            }
+            
+            songElement.innerHTML = `
+                <div class="song-info">
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-artist">by ${song.artist}</div>
+                    <div class="reason">${song.reason}</div>
+                </div>
+                <div class="song-details">
+                    <div class="difficulty-badge ${difficultyClass}">
+                        Level ${song.difficulty}
+                    </div>
+                    <button class="play-button" title="Preview on Spotify">▶</button>
+                </div>
+            `;
+            
+            playlistContainer.appendChild(songElement);
+        }
+        
+        // Save playlist to Spotify (this would interact with the Spotify API)
+        async function savePlaylistToSpotify() {
+            alert('In a real app, this would save your nightmare playlist to Spotify! For now, consider yourself lucky we saved you the embarrassment.');
+        }
+        
+        // Get a list of notoriously difficult karaoke songs based on difficulty level
+        function getTerribleKaraokeSongs(difficultyLevel) {
+            // In a real application, we would query the Spotify API for these characteristics
+            const allSongs = [
+                {
+                    title: "Bohemian Rhapsody",
+                    artist: "Queen",
+                    difficulty: 5,
+                    reason: "Multiple vocal styles, extreme range changes, and operatic section"
+                },
+                {
+                    title: "Chandelier",
+                    artist: "Sia",
+                    difficulty: 5,
+                    reason: "Extremely high chorus that strains even professional vocalists"
+                },
+                {
+                    title: "Vision of Love",
+                    artist: "Mariah Carey",
+                    difficulty: 5,
+                    reason: "Five-octave vocal range with whistle notes beyond most humans"
+                },
+                {
+                    title: "Rap God",
+                    artist: "Eminem",
+                    difficulty: 5,
+                    reason: "Contains a section with 6.46 words per second - world record pace"
+                },
+                {
+                    title: "Take On Me",
+                    artist: "A-ha",
+                    difficulty: 4,
+                    reason: "Famous for its impossible high notes in falsetto"
+                },
+                {
+                    title: "Emotions",
+                    artist: "Mariah Carey",
+                    difficulty: 5,
+                    reason: "Features Mariah's signature whistle register notes"
+                },
+                {
+                    title: "Stairway to Heaven",
+                    artist: "Led Zeppelin",
+                    difficulty: 4,
+                    reason: "8-minute epic with gradually increasing vocal intensity"
+                },
+                {
+                    title: "All I Want for Christmas Is You",
+                    artist: "Mariah Carey",
+                    difficulty: 4,
+                    reason: "Deceptively challenging with quick passages and high notes"
+                },
+                {
+                    title: "Guns and Ships",
+                    artist: "Hamilton (Musical)",
+                    difficulty: 5,
+                    reason: "Fastest verses in Broadway history at 6.3 words per second"
+                },
+                {
+                    title: "Dream On",
+                    artist: "Aerosmith",
+                    difficulty: 4,
+                    reason: "Steven Tyler's iconic high-pitched screams"
+                },
+                {
+                    title: "Welcome to the Black Parade",
+                    artist: "My Chemical Romance",
+                    difficulty: 3,
+                    reason: "Dramatic dynamic shifts and powerful high chorus"
+                },
+                {
+                    title: "Livin' on a Prayer",
+                    artist: "Bon Jovi",
+                    difficulty: 3,
+                    reason: "Key change and high chorus that catches singers off guard"
+                },
+                {
+                    title: "Somebody To Love",
+                    artist: "Queen",
+                    difficulty: 4,
+                    reason: "Complex harmonies and soulful vocals with extreme range"
+                },
+                {
+                    title: "Diva",
+                    artist: "Beyoncé",
+                    difficulty: 4,
+                    reason: "Rapid-fire vocals with complex runs and high notes"
+                },
+                {
+                    title: "Love On Top",
+                    artist: "Beyoncé",
+                    difficulty: 4,
+                    reason: "Four consecutive key changes, each higher than the last"
+                },
+                {
+                    title: "The Star-Spangled Banner",
+                    artist: "Traditional",
+                    difficulty: 4,
+                    reason: "Range of one-and-a-half octaves that trips up professionals"
+                },
+                {
+                    title: "I Will Always Love You",
+                    artist: "Whitney Houston",
+                    difficulty: 4,
+                    reason: "Power notes requiring exceptional breath control"
+                },
+                {
+                    title: "One Sweet Day",
+                    artist: "Mariah Carey & Boyz II Men",
+                    difficulty: 4,
+                    reason: "Complex vocal runs and harmonies throughout"
+                },
+                {
+                    title: "Without Me",
+                    artist: "Eminem",
+                    difficulty: 3,
+                    reason: "Fast verses requiring precise articulation and breath control"
+                },
+                {
+                    title: "Skyfall",
+                    artist: "Adele",
+                    difficulty: 3,
+                    reason: "Powerful sustained notes requiring tremendous lung capacity"
+                },
+                {
+                    title: "Defying Gravity",
+                    artist: "Wicked (Musical)",
+                    difficulty: 4,
+                    reason: "Broadway powerhouse with extremely challenging finale"
+                },
+                {
+                    title: "Tequila",
+                    artist: "The Champs",
+                    difficulty: 5,
+                    reason: "The timing of saying just 'tequila' at the exact right moments"
+                },
+                {
+                    title: "Around The World",
+                    artist: "Daft Punk",
+                    difficulty: 5,
+                    reason: "Repeating 'Around the world' 144 times without losing track"
+                }
+            ];
+            
+            // Filter songs based on difficulty level
+            let filteredSongs = allSongs.filter(song => song.difficulty >= difficultyLevel);
+            
+            // If we don't have enough songs, add some lower difficulty ones
+            if (filteredSongs.length < 5) {
+                const additionalSongs = allSongs.filter(song => song.difficulty < difficultyLevel)
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 5 - filteredSongs.length);
+                
+                filteredSongs = [...filteredSongs, ...additionalSongs];
+            }
+            
+            // Randomize and return up to 10 songs
+            return filteredSongs
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 10);
+        }
+        
+        // In a real app, you would implement these Spotify API functions:
+        
+        // 1. Exchange authorization code for access token
+        async function exchangeCodeForToken(code) {
+            // This would be handled server-side in a production app
+            // Client credentials should never be exposed in client-side code
+        }
+        
+        // 2. Search for tracks with specific audio features
+        async function searchDifficultSongs(accessToken, difficultyLevel) {
+            // Use the Spotify API to search for songs with:
+            // - High or varied "pitch" (using audio analysis)
+            // - Fast tempo (for rap/fast songs)
+            // - Complex chord progressions
+        }
+        
+        // 3. Create a new playlist
+        async function createSpotifyPlaylist(accessToken, userId, songUris) {
+            // POST to https://api.spotify.com/v1/users/{user_id}/playlists
+            // Then add tracks to the playlist
+        }
+    </script>
+</body>
+</html>
