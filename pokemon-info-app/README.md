@@ -74,6 +74,9 @@ The build artifacts will be stored in the `build` directory.
 
 Once the application is running, you can browse through the list of Pokémon. Click on a Pokémon card to view more detailed information.
 
+## Screenshot
+<img width="1512" alt="Screenshot 2025-04-15 at 5 09 50 PM" src="https://github.com/user-attachments/assets/0b634ca7-d595-45bc-b326-c00efa7ef451" />
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
