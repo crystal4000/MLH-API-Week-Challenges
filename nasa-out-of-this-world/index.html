@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Cosmic Explorer</title>
+    <link rel="icon" href="assets/nasa_logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        body {
+    background-color: #0a1730;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+.navbar {
+    background-color: rgba(10, 23, 48, 0.8) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section {
+    min-height: 100vh;
+    padding: 80px 0;
+    display: flex;
+    align-items: center;
+}
+
+.apod-img {
+    max-height: 70vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(42, 100, 186, 0.6);
+    transition: transform 0.3s ease;
+}
+
+.apod-img:hover {
+    transform: scale(1.02);
+}
+
+.earth-view-container {
+    height: 60vh;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(42, 100, 186, 0.6);
+}
+
+.earth-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.neo-container {
+    height: 60vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(42, 100, 186, 0.6);
+    overflow: hidden;
+    padding: 20px;
+    background-color: rgba(10, 23, 48, 0.7);
+}
+
+.neo-object {
+    position: relative;
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: rgba(20, 40, 80, 0.5);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neo-object:hover {
+    transform: translateX(10px);
+    background-color: rgba(30, 60, 100, 0.7);
+}
+
+.hazard-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.loading-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(10, 23, 48, 0.9);
+    z-index: 9999;
+}
+
+.loader {
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top: 8px solid #4285f4;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #4285f4, transparent);
+}
+
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.custom-tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(20, 40, 80, 0.95);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.custom-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* For the 3D asteroid animation */
+#asteroid-canvas {
+    width: 100%;
+    height: 300px;
+    background-color: transparent;
+}
+
+/* Planet rotating effect */
+.planet-container {
+    perspective: 1000px;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+.planet {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate 20s infinite linear;
+}
+
+@keyframes rotate {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+.data-item {
+    transition: transform 0.3s ease;
+}
+
+.data-item:hover {
+    transform: translateY(-5px);
+}
+
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loading">
+        <div class="loader"></div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="assets/nasa_logo.png" alt="NASA Logo" class="me-2" width="100" height="80">
+                <span>INCRIDEA</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#apod">Astronomy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#earth">Earth View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#neo">Asteroids</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                    <h1 class="display-4 mb-4">INCRIDEA</h1>
+                    <p class="lead mb-4">Explore the infinite. Journey through NASA's vast collection of space data and imagery. Discover breathtaking views of our universe, monitor near-Earth objects, and see our planet from space.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#apod" class="btn btn-primary">Begin Exploration</a>
+                        <a href="#about" class="btn btn-outline-light">See Events</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 animate__animated animate__fadeInRight">
+                    <div class="planet-container">
+                        <div class="planet">
+                            <img src="assets/earth.png" alt="Planet" class="img-fluid rounded-circle" width="400" height="400">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- APOD Section -->
+    <section class="section" id="apod" style="background-color: #0d2146;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Astronomy Picture of the Day</h2>
+                    <p class="lead">NASA's daily cosmic wonder, explained by astronomers.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center mb-4">
+                    <div class="animate__animated animate__fadeIn" id="apod-container">
+                        <div class="placeholder-content">
+                            <img src="assets/astrnomy.jpg" alt="APOD Loading" class="img-fluid apod-img">
+                            <div class="mt-4">
+                                <h3 class="placeholder-glow">
+                                    <span class="placeholder col-6"></span>
+                                </h3>
+                                <p class="placeholder-glow">
+                                    <span class="placeholder col-7"></span>
+                                    <span class="placeholder col-4"></span>
+                                    <span class="placeholder col-4"></span>
+                                    <span class="placeholder col-6"></span>
+                                    <span class="placeholder col-8"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Earth View Section -->
+    <section class="section" id="earth">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Earth From Space</h2>
+                    <p class="lead">See our beautiful planet through the eyes of NASA's satellites.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7 mb-4 mb-lg-0">
+                    <div class="earth-view-container animate__animated animate__fadeIn" id="epic-container">
+                        <img src="assets/earth_from_space.jpg" alt="Earth View Loading" class="earth-img">
+                        <div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 w-100">
+                            <p class="mb-0" id="epic-date">Loading latest image date...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <h3 class="mb-4">Earth Polychromatic Imaging Camera (EPIC)</h3>
+                    <p>EPIC provides full-disc imagery of Earth from NASA's DSCOVR spacecraft, which is located at the L1 Lagrange point, a gravitationally stable spot between Earth and the Sun.</p>
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="data-item p-3 bg-dark bg-opacity-50 rounded">
+                                <h5>Distance from Earth</h5>
+                                <p class="mb-0">1.5 million km</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="data-item p-3 bg-dark bg-opacity-50 rounded">
+                                <h5>Image Frequency</h5>
+                                <p class="mb-0">Every 1-2 hours</p>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="p-3 bg-dark bg-opacity-50 rounded">
+                                <h5 class="mb-3">Available Archives</h5>
+                                <div class="btn-group w-100" id="epic-archives">
+                                    <button class="btn btn-outline-primary active" data-type="natural">Natural Color</button>
+                                    <button class="btn btn-outline-primary" data-type="enhanced">Enhanced Color</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- NEO Section -->
+    <section class="section" id="neo" style="background-color: #102352;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Near Earth Objects</h2>
+                    <p class="lead">Track asteroids and comets that pass close to Earth.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="p-4 rounded shadow-lg animate__animated animate__fadeInLeft" style="background-color: rgba(8, 18, 38, 0.7);">
+                        <h3 class="mb-4">Asteroid Tracker</h3>
+                        <p>NASA's Center for Near Earth Object Studies (CNEOS) monitors and catalogs asteroids and comets that could approach Earth.</p>
+                        <div id="asteroid-canvas" class="my-4"></div>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-center">
+                                <h5>Total Tracked</h5>
+                                <p class="display-6" id="neo-count">...</p>
+                            </div>
+                            <div class="text-center">
+                                <h5>Potentially Hazardous</h5>
+                                <p class="display-6" id="hazardous-count">...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="neo-container animate__animated animate__fadeInRight">
+                        <h4 class="mb-3">Approaching Objects (Next 7 Days)</h4>
+                        <div id="neo-list">
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-4" style="background-color: #0a1730;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Created using NASA's Open APIs. This is not an official NASA website.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>Data courtesy of NASA - <a href="https://api.nasa.gov" target="_blank" class="text-white">api.nasa.gov</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+     <script src="index.js"></script>
+</body>
+</html>
