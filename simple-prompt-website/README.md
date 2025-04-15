@@ -48,6 +48,11 @@ To start the development server, run:
 npm start
 ```
 
+If you are using **GitHub Codespaces**, use the following command instead:
+```
+export NODE_OPTIONS=--openssl-legacy-provider && npm start
+```
+
 The application will be available at `http://localhost:3000`.
 
 ### Usage
