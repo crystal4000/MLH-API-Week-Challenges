@@ -37,3 +37,8 @@ The application:
 3. Displays prompts in a clean, readable format
 4. Provides functionality to save prompts to local storage
 5. Offers a simple user interface focused on the writing prompts
+
+
+## Screenshot
+<img width="1512" alt="Screenshot 2025-04-15 at 5 26 33 PM" src="https://github.com/user-attachments/assets/152c3596-7219-41c4-993c-950968344f59" />
+
