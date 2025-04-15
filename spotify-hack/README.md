@@ -23,6 +23,7 @@ A humorous web application that generates playlists of the most challenging kara
 3. Set the redirect URI to match your deployment URL
 4. Copy your Client ID to the application when prompted
 
+
 ## How It Works
 
 The application:
@@ -36,3 +37,4 @@ The application:
 This is a demo application that simulates playlist creation. In a production environment, you would need a server-side component to securely handle the OAuth token exchange.
 
 ## Screenshot
+<img width="1511" alt="Screenshot 2025-04-15 at 5 02 02 PM" src="https://github.com/user-attachments/assets/65f07c33-ce22-4808-bdb5-a640777135ae" />
