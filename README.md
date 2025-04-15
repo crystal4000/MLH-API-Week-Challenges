@@ -1,53 +1,59 @@
-# MLH-API-Week-Challenges
-Completed Challenges for MLH API Week
+# MLH API Week Challenges
 
-## 4. For nasa-out-of-this-world
+This repository contains a collection of projects developed during the MLH API Week Challenges. Each project demonstrates the creative use of different APIs to build fun and interesting applications.
 
-```markdown
-# NASA Cosmic Explorer
+## Projects
+
+### [Fortune Cookie Commit Messages](./useless-hack)
+
+A fun and quirky web application that generates fortune cookie-style Git commit messages to save you from thinking of clever commit messages.
+
+- 🔮 Random fortune cookie-style commit messages
+- ✨ Emoji prefixes for each message
+- 📋 Copy to clipboard functionality
+- 🕒 Message history tracking
+
+### [Terrible Karaoke Generator](./spotify-hack)
+
+A humorous web application that generates playlists of the most challenging karaoke songs to sing, using the Spotify API.
+
+- 🎤 Curates difficult-to-sing karaoke songs
+- 🎚️ Adjustable difficulty levels
+- 🎵 Song difficulty explanations
+- 💾 Mock playlist saving functionality
+
+### [Python Snake Game with Trivia](./snake-game)
+
+A classic Snake game implemented in Python with an educational twist - collect special food to answer trivia questions for bonus points!
+
+- 🐍 Classic snake gameplay
+- ❓ Trivia integration with Open Trivia Database API
+- 🍎 Regular and special food mechanics
+- 🧠 Bonus points for answering questions correctly
+
+### [NASA Cosmic Explorer](./nasa-out-of-this-world)
 
 An immersive web application that showcases NASA's open data and imagery, allowing users to explore astronomy, Earth views, and near-Earth objects.
 
-## Features
+- 🌌 Astronomy Picture of the Day (APOD)
+- 🌎 Earth Polychromatic Imaging Camera (EPIC) views
+- ☄️ Near Earth Object tracking
+- 🌠 Interactive stellar background
 
-- 🌌 Astronomy Picture of the Day (APOD) with detailed explanations
-- 🌎 Earth Polychromatic Imaging Camera (EPIC) views of Earth from space
-- ☄️ Near Earth Object tracker showing approaching asteroids
-- 🌠 Interactive star background with twinkling effect
-- 📊 Visualization of asteroid sizes and hazard levels
+## About These Projects
+
+These projects were developed to showcase creative uses of public APIs while building fun applications. Each project demonstrates different aspects of API integration, from simple GET requests to OAuth authentication flows.
+
+Feel free to explore each project's directory for more detailed information, installation instructions, and screenshots.
 
 ## Technologies Used
 
 - HTML/CSS/JavaScript
-- Bootstrap for responsive design
-- NASA Open APIs:
-  - APOD API
-  - EPIC API
-  - Near Earth Object Web Service (NeoWs)
-- Animate.css for animations
-
-## Setup
-
-1. Get a NASA API key from [api.nasa.gov](https://api.nasa.gov/)
-2. Replace `DEMO_KEY` in `index.js` with your API key
-3. Open `index.html` in a web browser
-
-## API Usage
-
-This application uses three main NASA APIs:
-
-1. **Astronomy Picture of the Day (APOD)**: Displays NASA's daily cosmic image with explanation
-2. **Earth Polychromatic Imaging Camera (EPIC)**: Shows stunning full-disc imagery of Earth from 1.5 million km away
-3. **Near Earth Object Web Service (NeoWs)**: Tracks asteroids and comets that will pass near Earth in the next 7 days
-
-## Note
-
-The DEMO_KEY has rate limits of:
-- Hourly Limit: 30 requests per IP address per hour
-- Daily Limit: 50 requests per IP address per day
-
-For higher limits, register for a free API key at [api.nasa.gov](https://api.nasa.gov/).
-
-## Screenshot
-
-[Add a screenshot of the application here]
+- Python
+- NASA Open APIs
+- Spotify Web API
+- Open Trivia Database API
+- OAuth 2.0 authentication
+- Pygame
+- Bootstrap
+- Animate.css
