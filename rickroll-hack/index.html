@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickConvert Pro - Free Online File Converter</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --secondary-dark: #27ae60;
+            --dark: #34495e;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .converter-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-types {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .file-select {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .file-select h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .file-format-select {
+            padding: 12px;
+            width: 80%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: var(--dark);
+            background-color: white;
+        }
+        
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--primary);
+            padding: 0 20px;
+        }
+        
+        .drop-area {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+        
+        .drop-area:hover, .drop-area.highlight {
+            border-color: var(--primary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .drop-area i {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .drop-area p {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .select-file-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .select-file-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .convert-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        
+        .convert-btn:hover {
+            background-color: var(--secondary-dark);
+        }
+        
+        .convert-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .file-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .file-size {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .feature i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .loading-spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: var(--primary);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .file-types {
+                flex-direction: column;
+            }
+            
+            .file-select {
+                margin-bottom: 20px;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+
+        /* Font awesome replacement icons using CSS */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            position: relative;
+        }
+        
+        .icon-upload::before {
+            content: '↑';
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        .icon-right-arrow::before {
+            content: '→';
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+        .icon-security::before {
+            content: '🔒';
+            font-size: 40px;
+        }
+        
+        .icon-speed::before {
+            content: '⚡';
+            font-size: 40px;
+        }
+        
+        .icon-cloud::before {
+            content: '☁️';
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QuickConvert Pro</h1>
+            <p>Convert any file format instantly - 100% free, no sign-up required!</p>
+        </header>
+        
+        <div class="converter-box">
+            <div class="file-types">
+                <div class="file-select">
+                    <h3>Convert From</h3>
+                    <select class="file-format-select" id="from-format">
+                        <option value="pdf">PDF</option>
+                        <option value="docx">DOCX</option>
+                        <option value="xlsx">XLSX</option>
+                        <option value="pptx">PPTX</option>
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="mp3">MP3</option>
+                        <option value="mp4">MP4</option>
+                        <option value="any">Any Format</option>
+                    </select>
+                </div>
+                
+                <div class="arrow">
+                    <span class="icon icon-right-arrow"></span>
+                </div>
+                
+                <div class="file-select">
+                    <h3>Convert To</h3>
+                    <select class="file-format-select" id="to-format">
+                        <option value="pdf">PDF</option>
+                        <option value="docx">DOCX</option>
+                        <option value="xlsx">XLSX</option>
+                        <option value="pptx">PPTX</option>
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="mp3">MP3</option>
+                        <option value="mp4">MP4</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="drop-area" id="drop-area">
+                <span class="icon icon-upload"></span>
+                <p>Drag & drop files here or click to browse</p>
+                <input type="file" id="file-input" class="file-input">
+                <button class="select-file-btn" id="select-file-btn">Select File</button>
+            </div>
+            
+            <div class="file-info" id="file-info">
+                <div class="file-name" id="file-name"></div>
+                <div class="file-size" id="file-size"></div>
+            </div>
+            
+            <button class="convert-btn" id="convert-btn" disabled>Convert Now</button>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <span class="icon icon-security"></span>
+                <h3>100% Secure</h3>
+                <p>Your files are encrypted and automatically deleted after conversion.</p>
+            </div>
+            
+            <div class="feature">
+                <span class="icon icon-speed"></span>
+                <h3>Lightning Fast</h3>
+                <p>Our advanced algorithms ensure the fastest possible conversions.</p>
+            </div>
+            
+            <div class="feature">
+                <span class="icon icon-cloud"></span>
+                <h3>Cloud-Based</h3>
+                <p>No software to install. Convert files directly in your browser.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 QuickConvert Pro. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+    </div>
+    
+    <!-- Processing Modal (This will become our Rickroll!) -->
+    <div class="modal" id="processing-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2 id="modal-title">Processing Your File</h2>
+            <div class="loading-spinner" id="loading-spinner"></div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p id="status-text">Preparing file for conversion...</p>
+            <div id="video-container" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const selectFileBtn = document.getElementById('select-file-btn');
+        const convertBtn = document.getElementById('convert-btn');
+        const fileInfo = document.getElementById('file-info');
+        const fileName = document.getElementById('file-name');
+        const fileSize = document.getElementById('file-size');
+        const modal = document.getElementById('processing-modal');
+        const closeModal = document.getElementById('close-modal');
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('status-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const modalTitle = document.getElementById('modal-title');
+        const videoContainer = document.getElementById('video-container');
+        
+        // Event Listeners
+        selectFileBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+        convertBtn.addEventListener('click', startConversion);
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            // Stop video by clearing the container
+            videoContainer.innerHTML = '';
+        });
+        
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.add('highlight');
+            });
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.remove('highlight');
+            });
+        });
+        
+        dropArea.addEventListener('drop', handleDrop);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length) {
+                handleFiles(files);
+            }
+        }
+        
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length) {
+                handleFiles(files);
+            }
+        }
+        
+        function handleFiles(files) {
+            const file = files[0];
+            displayFileInfo(file);
+            convertBtn.disabled = false;
+        }
+        
+        function displayFileInfo(file) {
+            fileInfo.style.display = 'block';
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function startConversion() {
+            // Show the modal
+            modal.style.display = 'flex';
+            
+            // Start the fake progress
+            let progress = 0;
+            progressBar.style.width = '0%';
+            
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress === 25) {
+                    statusText.textContent = 'Analyzing file structure...';
+                } else if (progress === 50) {
+                    statusText.textContent = 'Converting content...';
+                } else if (progress === 75) {
+                    statusText.textContent = 'Optimizing output...';
+                } else if (progress === 95) {
+                    statusText.textContent = 'Finalizing...';
+                } else if (progress >= 100) {
+                    clearInterval(interval);
+                    rickRoll();
+                }
+            }, 120);
+        }
+        
+        function rickRoll() {
+            // Hide progress elements
+            loadingSpinner.style.display = 'none';
+            statusText.style.display = 'none';
+            
+            // Update modal title
+            modalTitle.textContent = 'Conversion Complete!';
+            
+            // Create and embed YouTube video (Rick Astley - Never Gonna Give You Up)
+            videoContainer.style.display = 'block';
+            videoContainer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="315" 
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=UmnNNoIRjKV3PexI&autoplay=1&muted=1" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen></iframe>
+                <p style="margin-top: 15px; font-weight: bold;">YOU'VE BEEN RICKROLLED! 🎵</p>
+            `;
+        }
+    </script>
+</body>
+</html>

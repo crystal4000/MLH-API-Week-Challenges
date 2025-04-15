@@ -67,6 +67,10 @@ A minimalist web application that generates creative writing prompts using AI an
 - ⭐ Save favorite prompts
 - 📱 Mobile-friendly interface
 
+### Rickroll Hack (./rickroll-hack)
+A website that presents itself as a file conversion tool but actually rickrolls users. Features a clean UI, realistic file upload functionality, and a surprise Rick Astley video instead of the expected file conversion.
+
+
 ## About These Projects
 
 These projects were developed to showcase creative uses of public APIs while building fun applications. Each project demonstrates different aspects of API integration, from simple GET requests to OAuth authentication flows.
