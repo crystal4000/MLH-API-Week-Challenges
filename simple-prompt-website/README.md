@@ -1,70 +1,39 @@
 # Simple Prompt Website
 
-This project is a simple web application built with React, TypeScript, and Tailwind CSS that allows users to interact with OpenAI's GPT-3 model. Users can input prompts and receive responses displayed on the screen.
+A minimalist web application that generates creative writing prompts to inspire writers, students, and creative thinkers. Save your favorite prompts and filter by categories to find the perfect inspiration for your next writing project.
 
 ## Features
 
-- User-friendly input field for prompts
-- Displays responses from the OpenAI API
-- Responsive design with a purple and white theme
+- ✍️ Generate random creative writing prompts with a single click
+- 🔄 Filter prompts by categories (fiction, non-fiction, poetry, dialogue, etc.)
+- ⭐ Save favorite prompts to your personal collection
+- 📱 Responsive design works on desktop, tablet, and mobile devices
+- 🌙 Dark/light mode toggle for comfortable viewing
+- 📋 Copy prompts to clipboard with a single click
+- 🔄 Share prompts via social media or direct link
 
 ## Technologies Used
 
-- React
-- TypeScript
-- Tailwind CSS
-- OpenAI API
+- HTML5, CSS3, and JavaScript
+- Local Storage for saving favorite prompts
+- Responsive design using CSS Flexbox/Grid
+- Creative Writing Prompts API (custom or third-party)
+- Font Awesome for icons
+- Google Fonts for typography
 
-## Getting Started
-
-To get a local copy up and running, follow these steps:
-
-### Prerequisites
-
-- Node.js (version 14 or later)
-- npm (Node package manager)
-
-### Installation
+## Setup
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/simple-prompt-website.git
-   ```
-
-2. Navigate to the project directory:
-   ```
-   cd simple-prompt-website
-   ```
-
-3. Install the dependencies:
-   ```
-   npm install
-   ```
-
-### Running the Application
-
-To start the development server, run:
-```
-npm start
+```bash
+git clone https://github.com/yourusername/simple-prompt-website.git
+cd simple-prompt-website
+2. Open ```index.html``` in your browser to run the application locally
 ```
 
-If you are using **GitHub Codespaces**, use the following command instead:
-```
-export NODE_OPTIONS=--openssl-legacy-provider && npm start
-```
-
-The application will be available at `http://localhost:3000`.
-
-### Usage
-
-1. Enter your prompt in the input field.
-2. Click the submit button to send the prompt to the OpenAI API.
-3. The response will be displayed below the input field.
-
-## Customization
-
-You can customize the theme colors in the `tailwind.config.js` file to suit your preferences.
-
-## License
-
-This project is licensed under the MIT License.
+## How It Works
+The application:
+1. Makes API calls to retrieve random writing prompts
+2. Allows filtering by selecting category buttons
+3. Displays prompts in a clean, readable format
+4. Provides functionality to save prompts to local storage
+5. Offers a simple user interface focused on the writing prompts
