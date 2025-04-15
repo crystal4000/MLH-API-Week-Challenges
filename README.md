@@ -40,6 +40,33 @@ An immersive web application that showcases NASA's open data and imagery, allowi
 - ☄️ Near Earth Object tracking
 - 🌠 Interactive stellar background
 
+### [User Country Profile](./user-country-profile)
+
+A web application that detects a user's location and provides interesting information about their country using multiple geographic APIs.
+
+- 🌍 IP-based geolocation detection
+- 🏛️ Country information display (capital, population, languages)
+- 💱 Currency conversion information
+- 🏳️ Flag and country image visualization
+
+### [Pokémon Info App](./pokemon-info-app)
+
+An interactive application that allows users to search for and learn about different Pokémon using the PokéAPI.
+
+- 🔍 Search by Pokémon name or ID
+- 📊 Display of Pokémon stats, types, and abilities
+- 🖼️ Multiple sprite views
+- 📱 Responsive design for all devices
+
+### [Simple Prompt Website](./simple-prompt-website)
+
+A minimalist web application that generates creative writing prompts using AI and allows users to save their favorites.
+
+- ✍️ Random writing prompt generation
+- 🔄 Category-based prompt filtering
+- ⭐ Save favorite prompts
+- 📱 Mobile-friendly interface
+
 ## About These Projects
 
 These projects were developed to showcase creative uses of public APIs while building fun applications. Each project demonstrates different aspects of API integration, from simple GET requests to OAuth authentication flows.
@@ -53,6 +80,9 @@ Feel free to explore each project's directory for more detailed information, ins
 - NASA Open APIs
 - Spotify Web API
 - Open Trivia Database API
+- PokéAPI
+- REST Countries API
+- IP Geolocation APIs
 - OAuth 2.0 authentication
 - Pygame
 - Bootstrap
