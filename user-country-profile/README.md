@@ -41,6 +41,10 @@ user-country-profile
 - **RandomUser API**: Generates random user profiles, including location and country information.
 - **REST Countries API**: Provides detailed information about countries, including population, area, and languages spoken.
 
+## Screenshot
+<img width="1512" alt="Screenshot 2025-04-15 at 5 08 13 PM" src="https://github.com/user-attachments/assets/391a06e5-05fb-4162-a097-6b20d0198138" />
+
+
 ## License
 
 This project is open-source and available for modification and distribution.
