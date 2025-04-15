@@ -43,4 +43,7 @@ pip install pygame requests
 - Correct answers increase your score by 5 points
 
 ## Screenshot
-[Add a screenshot of the game here]
+
+<img width="715" alt="Screenshot 2025-04-15 at 5 03 20 PM" src="https://github.com/user-attachments/assets/f1179704-263d-47a3-ae21-106490545fc5" />
+
+<img width="719" alt="Screenshot 2025-04-15 at 5 03 42 PM" src="https://github.com/user-attachments/assets/3e041c4c-a480-4510-829e-866221422873" />
