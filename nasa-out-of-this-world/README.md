@@ -1,7 +1,3 @@
-
-## 4. For nasa-out-of-this-world
-
-```markdown
 # NASA Cosmic Explorer
 
 An immersive web application that showcases NASA's open data and imagery, allowing users to explore astronomy, Earth views, and near-Earth objects.
@@ -47,5 +43,5 @@ The DEMO_KEY has rate limits of:
 For higher limits, register for a free API key at [api.nasa.gov](https://api.nasa.gov/).
 
 ## Screenshot
+<img width="1512" alt="Screenshot 2025-04-15 at 5 04 57 PM" src="https://github.com/user-attachments/assets/a6236c0b-eb41-4d87-89ea-e0f75d09b8df" />
 
-[Add a screenshot of the application here]
