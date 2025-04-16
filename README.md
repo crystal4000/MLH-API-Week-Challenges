@@ -68,8 +68,22 @@ A minimalist web application that generates creative writing prompts using AI an
 - 📱 Mobile-friendly interface
 
 ### [Rickroll Hack](./rickroll-hack)
-A website that presents itself as a file conversion tool but actually rickrolls users. Features a clean UI, realistic file upload functionality, and a surprise Rick Astley video instead of the expected file conversion.
+A deceptive web application that poses as a professional file conversion tool but delivers an unexpected musical surprise.
 
+- 🔄 Realistic file upload interface with format selection
+- ⏳ Convincing progress bar and conversion simulation
+- 🎵 Classic rickroll payoff when "conversion" completes
+- 💼 Professional-looking design with features section
+- 📱 Fully responsive across all device sizes
+
+### [Joke Machine](./joke-machine)
+A fun web application that fetches jokes from multiple APIs and displays them with a colorful, interactive interface.
+
+- 🎭 Multiple joke categories (Dad, Programming, Chuck Norris)
+- ⚡ Real-time API integration with dynamic content loading
+- 🔄 Two-part joke reveal functionality
+- 📱 Responsive design for all devices
+- 🔗 Easy social media sharing options
 
 ## About These Projects
 
