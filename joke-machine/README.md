@@ -2,7 +2,10 @@
 
 A fun web application that fetches jokes from various APIs and displays them dynamically.
 
-![Joke Machine Screenshot](screenshot.png)
+## Screenshot
+
+<img width="1512" alt="Screenshot 2025-04-15 at 7 10 07 PM" src="https://github.com/user-attachments/assets/83c5f182-3671-406d-be7d-4a49272cd54c" />
+
 
 ## 📖 Overview
 
