@@ -85,6 +85,14 @@ A fun web application that fetches jokes from multiple APIs and displays them wi
 - 📱 Responsive design for all devices
 - 🔗 Easy social media sharing options
 
+### [XKCD Comic Viewer](./xkcd-comics-app)
+An interactive web application that lets you browse and explore XKCD comics using their public API.
+
+- 🎨 View latest, random, and specific comics
+- ⬅️ Navigate with prev/next and first/last buttons
+- 🔍 Search comics by ID number
+- 📱 Responsive design for all devices
+
 ## About These Projects
 
 These projects were developed to showcase creative uses of public APIs while building fun applications. Each project demonstrates different aspects of API integration, from simple GET requests to OAuth authentication flows.
@@ -101,6 +109,7 @@ Feel free to explore each project's directory for more detailed information, ins
 - PokéAPI
 - REST Countries API
 - IP Geolocation APIs
+- XKCD API
 - OAuth 2.0 authentication
 - Pygame
 - Bootstrap
